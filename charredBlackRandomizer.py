@@ -6,6 +6,7 @@ import time
 import random
 import pyautogui
 from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.webdriver.support.select import Select
 
 continueRun = True
 
@@ -203,15 +204,21 @@ while continueRun:
         except NameError:
             raceNumber = random.randint(1, 7)
         print(f'raceNumber = {raceNumber}')
-        if raceNumber > 1:
-            raceSelector.click()
-            for _ in range(0, raceNumber - 1):
-                pyautogui.press('down')
-            time.sleep(0.5)
-            pyautogui.press('enter')
-            time.sleep(0.5)
-        else:
-            pass
+        raceSelector2 = Select(driver.find_element_by_xpath('//*[@id="collapse_first"]/div/div/div/div[5]/select'))
+        if raceNumber == 1:
+            raceSelector2.select_by_value('man')
+        elif raceNumber == 2:
+            raceSelector2.select_by_value('dwarf')
+        elif raceNumber == 3:
+            raceSelector2.select_by_value('elf')
+        elif raceNumber == 4:
+            raceSelector2.select_by_value('orc')
+        elif raceNumber == 5:
+            raceSelector2.select_by_value('roden')
+        elif raceNumber == 6:
+            raceSelector2.select_by_value('wolf')
+        elif raceNumber == 7:
+            raceSelector2.select_by_value('troll')
         genderSelector = driver.find_element_by_css_selector('#collapse_first > div > div > div > div:nth-child(8) > '
                                                              'select')
         try:
@@ -223,12 +230,8 @@ while continueRun:
             genderNumber = random.randint(1, 2)
         print(f'genderNumber = {genderNumber}')
         if genderNumber > 1:
-            genderSelector.click()
-            for i in range(0, raceNumber):
-                pyautogui.press('down')
-            time.sleep(0.5)
-            pyautogui.press('enter')
-            time.sleep(0.5)
+            genderSelector2 = Select(driver.find_element_by_xpath('//*[@id="collapse_first"]/div/div/div/div[8]/select'))
+            genderSelector2.select_by_value('male')
         else:
             pass
         try:
@@ -245,30 +248,17 @@ while continueRun:
             print(f'number of settings available = {len(allSettings)}')
             settingNum = random.randint(1, len(allSettings))
             print(f'settingNum = {settingNum}')
-            settingSelector.click()
-            for _ in range(0, settingNum + 1):
-                pyautogui.press('up')
-            if settingNum > 0:
-                for _ in range(1, settingNum):
-                    pyautogui.press('down')
-            time.sleep(0.5)
-            pyautogui.press('enter')
-            time.sleep(0.5)
+            setting = Select(driver.find_element_by_xpath('''//*[@id="collapse_lp"]/div/div[2]/div[1]/div[1]/select'''))
+            setting.select_by_value(str(settingNum - 1))
             lifePathSelector = driver.find_element_by_xpath(
                 '''//*[@id="collapse_lp"]/div/div[2]/div[1]/div[2]/select''')
             allLifepaths = lifePathSelector.find_elements_by_tag_name("option")
             print(f'number of lifepaths available = {len(allLifepaths)}')
             lifePathNum = random.randint(1, len(allLifepaths))
             print(f'lifePathNum = {lifePathNum}')
-            lifePathSelector.click()
-            for _ in range(0, lifePathNum + 1):
-                pyautogui.press('up')
-            if lifePathNum > 0:
-                for _ in range(1, lifePathNum):
-                    pyautogui.press('down')
-            time.sleep(0.5)
-            pyautogui.press('enter')
-            time.sleep(0.5)
+            lifepath = Select(
+                driver.find_element_by_xpath('''//*[@id="collapse_lp"]/div/div[2]/div[1]/div[2]/select'''))
+            lifepath.select_by_value(str(lifePathNum - 1))
             addLifePathButton = driver.find_element_by_css_selector(
                 '#collapse_lp > div > div.container > div:nth-child(1) > div.col-md-1 > a')
             try:
@@ -303,8 +293,3 @@ while continueRun:
             elif finishedCharacterInput == 1:
                 characterFinished = False
                 break
-
-
-
-
-
